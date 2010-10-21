@@ -60,7 +60,7 @@ class Image(fa.FitsArray):
 
 class Object(fa.FitsArray):
     """
-    A subclass of FitsArray with mandatory keywords defining an object cube
+    A subclass of FitsArray with mandatory keywords defining an cube object
     """
     def __new__(subtype, shape, dtype=float, buffer=None, offset=0,
                 strides=None, order=None, header=None):
