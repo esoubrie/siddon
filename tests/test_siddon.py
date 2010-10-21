@@ -6,6 +6,7 @@ import numpy as np
 import siddon
 
 def test_simu():
+
     import siddon.simu as simu
     
     im = simu.fa.infoarrays2infoarray([simu.Image((1, 1)),])
@@ -19,5 +20,7 @@ def test_simu():
     obj2 = siddon.backprojector(im, obj.copy())
     assert_almost_equal(obj2[0], 0.39369162)
 
+
 if __name__ == "__main__":
     nose.run(argv=['', __file__])
+
