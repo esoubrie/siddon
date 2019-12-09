@@ -1,0 +1,8 @@
+#!/bin/bash
+mkdir doc
+pydoc2 -w tomograpy
+mv tomograpy.html doc/
+cd tomograpy
+pydoc2 -w ./
+rename '' tomograpy. *.html
+mv *.html ../doc/

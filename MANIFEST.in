@@ -1,1 +1,8 @@
-recursive-include siddon *.h
+include tomograpy/C_siddon.c.template
+include AUTHOR
+include LICENCE_FR
+include LICENSE
+include README.rst
+recursive-include tests *.py
+exclude tomograpy/*.c
+exclude tomograpy/*.so

@@ -1,34 +1,24 @@
 #!/usr/bin/env python
 import time
 import numpy as np
-import siddon
+import tomograpy
 # object
-header = {'SIMPLE':True,'BITPIX':-64,
-          'NAXIS1':128, 'NAXIS2':128, 'NAXIS3':128,
-          'CRPIX1':64., 'CRPIX2':64., 'CRPIX3':64.,
-          'CDELT1':0.02, 'CDELT2':0.02, 'CDELT3':0.02,
-          'CRVAL1':0., 'CRVAL2':0., 'CRVAL3':0.,}
-obj = siddon.simu.object_from_header(header)
-obj[:] = siddon.phantom.shepp_logan(obj.shape)
-#obj[:] = 1.
-# data 
-image_header = {'n_images':10,
-                'SIMPLE':True, 'BITPIX':-64,
-                'NAXIS1':128, 'NAXIS2':128,
-                'CRPIX1':64, 'CRPIX2':64,
-                'CDELT1':6e-5, 'CDELT2':6e-5,
-                'CRVAL1':0., 'CRVAL2':0.,
-                }
-image_header['radius'] = 200.
-data = siddon.simu.circular_trajectory_data(**image_header)
-data[:] = np.zeros(data.shape)
+object_header = tomograpy.centered_cubic_map_header(3, 128)
+obj = tomograpy.simu.object_from_header(object_header, fill=1.)
+# data
+radius = 200.
+a = tomograpy.fov(object_header, radius)
+data = tomograpy.centered_stack(a, 128, n_images=60, radius=200., max_lon=np.pi)
 # projection
 t = time.time()
-data = siddon.projector(data, obj)
+data = tomograpy.projector(data, obj)
 print("projection time : " + str(time.time() - t))
 # backprojection
 t = time.time()
-x0 = obj.copy()
-x0[:] = 0.
-x0 = siddon.backprojector(data, x0.copy())
+data[:] = 1.
+obj0 = tomograpy.simu.object_from_header(object_header, fill=0.)
+obj0 = tomograpy.backprojector(data, obj0)
 print("backprojection time : " + str(time.time() - t))
+
+obj1 = tomograpy.simu.object_from_header(object_header, fill=0.)
+obj1 = tomograpy.backprojector(data, obj1)
